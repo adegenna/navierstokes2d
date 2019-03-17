@@ -30,12 +30,12 @@ int main(int argc, char* argv[]) {
   cout << options << endl;
 
   // Load state
-  MatrixXd omega0 = load_csv<MatrixXd>(options.initialvorticityfile);
+  ArrayXXd omega0 = load_csv<ArrayXXd>(options.initialvorticityfile);
   
   // Pass parsed program options to simulation
   Grid2d grid(options.xmin,options.xmax,options.ymin,options.ymax,\
 			     options.nx,options.ny);
-  NavierStokesState state(omega0.array());
+  NavierStokesState state(omega0);
   NavierStokesPhysics physics(options, state, grid);
   physics.solve();
   

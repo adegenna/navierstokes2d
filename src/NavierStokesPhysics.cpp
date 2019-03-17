@@ -75,13 +75,13 @@ NavierStokesPhysics::~NavierStokesPhysics() {
 
 }
 
-void NavierStokesPhysics::update_fourier_vorticity_crank_nicolson(ArrayXcd& W_hat, \
-								  ArrayXcd& W_hat_new) {
-  ArrayXcd psi_hat,u_grad_W_hat;
-  ArrayXd u,v,W_x,W_y,u_grad_W,a,b;
-  ArrayXcd kx               = grid_->get_fourier_frequencies_x();
-  ArrayXcd ky               = grid_->get_fourier_frequencies_y();
-  ArrayXd alias_correction  = (grid_->get_fourier_alias_correction()).cast <double> ();
+void NavierStokesPhysics::update_fourier_vorticity_crank_nicolson(ArrayXXcd& W_hat, \
+								  ArrayXXcd& W_hat_new) {
+  ArrayXXcd psi_hat,u_grad_W_hat;
+  ArrayXXd u,v,W_x,W_y,u_grad_W,a,b;
+  ArrayXXcd kx               = grid_->get_fourier_frequencies_x();
+  ArrayXXcd ky               = grid_->get_fourier_frequencies_y();
+  ArrayXXd alias_correction  = (grid_->get_fourier_alias_correction()).cast <double> ();
   double mu                 = options_.mu;
   double dt                 = options_.dt;
   
@@ -104,35 +104,36 @@ void NavierStokesPhysics::update_fourier_vorticity_crank_nicolson(ArrayXcd& W_ha
   u_grad_W_hat = *fft2( tmpptr5 );
   u_grad_W_hat = alias_correction * u_grad_W_hat;
   a            = 1./(1./dt - 0.5 * mu * laplacian_hat_);
-  b            = 1./(1./dt + 0.5 * mu * laplacian_hat_);
+  b            =    (1./dt + 0.5 * mu * laplacian_hat_);
   W_hat_new    = a * ( b * W_hat - u_grad_W );
+  cout << W_hat_new.abs().maxCoeff() << " " << W_hat_new.abs().minCoeff() << endl;
 
 }
 
 void NavierStokesPhysics::solve() {
 
-  ArrayXcd kx               = grid_->get_fourier_frequencies_x();
-  ArrayXcd ky               = grid_->get_fourier_frequencies_y();
-  ArrayXi alias_correction  = grid_->get_fourier_alias_correction();  
+  ArrayXXcd kx               = grid_->get_fourier_frequencies_x();
+  ArrayXXcd ky               = grid_->get_fourier_frequencies_y();
+  ArrayXXi alias_correction  = grid_->get_fourier_alias_correction();
   laplacian_hat_            = (kx * kx + ky * ky).real();
   laplacian_hat_(0,0)       = 1;
-  ArrayXd W                 = simulation_->get_vorticity();
+  ArrayXXd W                 = simulation_->get_vorticity();
   int sampling_period       = options_.tsave;
   MatrixXd tmp              = W.matrix();
   shared_ptr< MatrixXd > tmpptr = make_shared< MatrixXd > (tmp);
-  ArrayXcd W_hat            = *fft2(tmpptr);
-  ArrayXcd W_hat_new;
+  ArrayXXcd W_hat            = *fft2(tmpptr);
+  ArrayXXcd W_hat_new;
   
   for (int i=0; i<options_.tsteps; i++) { 
-    this->update_fourier_vorticity_crank_nicolson(W_hat,W_hat_new);
-    W_hat = W_hat_new;
     if ((i % sampling_period) == 0) {
       MatrixXcd tmp2 = W_hat.matrix();
       shared_ptr< MatrixXcd > tmpptr2 = make_shared< MatrixXcd > (tmp2);
       W = ifft2( tmpptr2 )->real();
       simulation_->set_vorticity(W);
-      simulation_->write_vorticity(options_.outputfile + "_" + std::to_string(i) + "_.csv");
+      simulation_->write_vorticity(options_.outputfile + "_" + std::to_string(i) + ".csv");
     }
+    this->update_fourier_vorticity_crank_nicolson(W_hat,W_hat_new);
+    W_hat = W_hat_new;
   }
 
 }

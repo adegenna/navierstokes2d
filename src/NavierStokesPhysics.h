@@ -18,12 +18,12 @@ class NavierStokesPhysics {
   
  private:
   
-  void update_fourier_vorticity_crank_nicolson(Eigen::ArrayXcd& W_hat,\
-					       Eigen::ArrayXcd& W_hat_new);
+  void update_fourier_vorticity_crank_nicolson(Eigen::ArrayXXcd& W_hat,\
+					       Eigen::ArrayXXcd& W_hat_new);
   const Options      options_;
   NavierStokesState* simulation_;
   Grid2d*            grid_;
-  Eigen::ArrayXd     laplacian_hat_;
+  Eigen::ArrayXXd     laplacian_hat_;
   
   
 };

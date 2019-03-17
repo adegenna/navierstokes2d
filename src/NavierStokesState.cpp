@@ -15,7 +15,7 @@
 using namespace std;
 using namespace Eigen;
 
-NavierStokesState::NavierStokesState(const ArrayXd& initialstate) 
+NavierStokesState::NavierStokesState(const ArrayXXd& initialstate) 
   : W_(initialstate)
 {
 }
