@@ -31,18 +31,12 @@ include_directories( ${CMAKE_SOURCE_DIR}
                      ${EIGEN3_INCLUDE_DIR}
 )
 
-# add_executable( testall
-#   tests/tests.cpp
-#   src/Inputfile.hpp
-#   src/LagrangianState.cpp
-#   src/ParticlePhysics.cpp
-#   src/TimeIntegration.cpp
-#   src/Quadtree/Bucket.cpp
-#   tests/inputs_test.cpp
-#   tests/lagrangian_test.cpp
-#   tests/physics_test.cpp
-#   tests/quadtree_test.cpp
-# )
+add_executable( testall
+  tests/tests.cpp
+  src/NavierStokesPhysics.cpp
+  src/NavierStokesState.cpp
+  tests/fft_test.cpp
+)
 
 add_executable( solver
   src/driver.cpp
@@ -59,9 +53,9 @@ target_link_libraries( solver
   ${Boost_LIBRARIES}   
 )
 
-# target_link_libraries(testall
-#   ${GTEST_LIBRARIES}
-#   ${Boost_LIBRARIES}
-#   /usr/lib/libgtest.a
-#   pthread
-# )
+target_link_libraries(testall
+  ${GTEST_LIBRARIES}
+  ${Boost_LIBRARIES}
+  /usr/lib/libgtest.a
+  pthread
+)

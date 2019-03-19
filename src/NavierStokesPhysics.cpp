@@ -77,35 +77,23 @@ NavierStokesPhysics::~NavierStokesPhysics() {
 
 void NavierStokesPhysics::update_fourier_vorticity_crank_nicolson(ArrayXXcd& W_hat, \
 								  ArrayXXcd& W_hat_new) {
-  ArrayXXcd psi_hat,u_grad_W_hat;
-  ArrayXXd u,v,W_x,W_y,u_grad_W,a,b;
   ArrayXXcd kx               = grid_->get_fourier_frequencies_x();
   ArrayXXcd ky               = grid_->get_fourier_frequencies_y();
   ArrayXXd alias_correction  = (grid_->get_fourier_alias_correction()).cast <double> ();
-  double mu                 = options_.mu;
-  double dt                 = options_.dt;
+  double mu                  = options_.mu;
+  double dt                  = options_.dt;
   
-  psi_hat        = -W_hat / laplacian_hat_;
-  MatrixXcd tmp1 = (ky * psi_hat).matrix();
-  shared_ptr< MatrixXcd > tmpptr1 = make_shared< MatrixXcd > (tmp1);
-  u            = ifft2( tmpptr1 )->real();
-  MatrixXcd tmp2 = (-kx * psi_hat).matrix();
-  shared_ptr< MatrixXcd > tmpptr2 = make_shared< MatrixXcd > (tmp2);
-  v            = ifft2(tmpptr2 )->real();
-  MatrixXcd tmp3 = (kx * W_hat).matrix();
-  shared_ptr< MatrixXcd > tmpptr3 = make_shared< MatrixXcd > (tmp3);
-  W_x          = ifft2( tmpptr3 )->real();
-  MatrixXcd tmp4 = (ky * W_hat).matrix();
-  shared_ptr< MatrixXcd > tmpptr4 = make_shared< MatrixXcd > (tmp4);
-  W_y          = ifft2( tmpptr4 )->real();
-  u_grad_W     = u * W_x + v * W_y;
-  MatrixXd tmp5 = u_grad_W.matrix();
-  shared_ptr< MatrixXd > tmpptr5 = make_shared< MatrixXd > (tmp5);
-  u_grad_W_hat = *fft2( tmpptr5 );
-  u_grad_W_hat = alias_correction * u_grad_W_hat;
-  a            = 1./(1./dt - 0.5 * mu * laplacian_hat_);
-  b            =    (1./dt + 0.5 * mu * laplacian_hat_);
-  W_hat_new    = a * ( b * W_hat - u_grad_W );
+  ArrayXXcd psi_hat      = -W_hat / laplacian_hat_;
+  ArrayXXd u             = ifft2( make_shared< MatrixXcd > ( ( ky * psi_hat).matrix()) )->real();
+  ArrayXXd v             = ifft2( make_shared< MatrixXcd > ( (-kx * psi_hat).matrix()) )->real();
+  ArrayXXd W_x           = ifft2( make_shared< MatrixXcd > ( (kx * W_hat).matrix()) )->real();
+  ArrayXXd W_y           = ifft2( make_shared< MatrixXcd > ( (ky * W_hat).matrix()) )->real();
+  ArrayXXd u_grad_W      = u * W_x + v * W_y;
+  ArrayXXcd u_grad_W_hat = *fft2( make_shared< MatrixXd > ( u_grad_W.matrix() ) );
+  u_grad_W               = ifft2( make_shared< MatrixXcd > ((alias_correction * u_grad_W_hat).matrix() ) )->real();
+  ArrayXXd a             = 1./(1./dt - 0.5 * mu * laplacian_hat_);
+  ArrayXXd b             =    (1./dt + 0.5 * mu * laplacian_hat_);
+  W_hat_new              = a * ( b * W_hat - u_grad_W );
   cout << W_hat_new.abs().maxCoeff() << " " << W_hat_new.abs().minCoeff() << endl;
 
 }

@@ -8,6 +8,9 @@
 #include <iostream>
 #include <memory>
 
+std::shared_ptr< Eigen::MatrixXcd > fft2( std::shared_ptr< Eigen::MatrixXd >  matIn);
+std::shared_ptr< Eigen::MatrixXcd > ifft2(std::shared_ptr< Eigen::MatrixXcd > matIn);
+
 class NavierStokesPhysics {
 
  public:
