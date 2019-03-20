@@ -26,7 +26,7 @@ class NavierStokesPhysics {
   const Options      options_;
   NavierStokesState* simulation_;
   Grid2d*            grid_;
-  Eigen::ArrayXXd     laplacian_hat_;
+  Eigen::ArrayXXcd   laplacian_hat_;
   
   
 };
