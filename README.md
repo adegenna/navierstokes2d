@@ -4,8 +4,11 @@ Periodic boundary conditions, rectangular domain.
 
 # Build
 mkdir navierstokes2d/build/
+
 cd navierstokes2d/build/
+
 cmake ../
+
 make
 
 # Preprocessing
@@ -15,6 +18,7 @@ To generate initial conditions for the solver, edit/run the simple python script
 First, edit the filepaths in src/input.dat to reflect what is on your machine. Then:
 
 cd build/
+
 ./solver --config=../src/input.dat
 
 # Visualization
