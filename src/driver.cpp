@@ -15,6 +15,7 @@
 #include "Grid2d.h"
 #include "NavierStokesState.h"
 #include "NavierStokesPhysics.h"
+#include "TimeIntegrator.h"
 
 using namespace std;
 using namespace Eigen;
@@ -37,7 +38,9 @@ int main(int argc, char* argv[]) {
 			     options.nx,options.ny);
   NavierStokesState state(omega0);
   NavierStokesPhysics physics(options, state, grid);
-  physics.solve();
+  TimeIntegrator integrator(options, physics, state);
+  
+  integrator.rk4( physics.get_current_fourier_vorticity() );
   
   return 0;
 }

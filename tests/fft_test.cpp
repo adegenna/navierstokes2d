@@ -1,4 +1,5 @@
 #include <boost/program_options.hpp>
+#include "../src/Fourier2d.h"
 #include "fft_test.h"
 #include "../src/NavierStokesPhysics.h"
 #include "../src/Inputfile.hpp"

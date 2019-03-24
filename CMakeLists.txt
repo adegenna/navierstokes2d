@@ -33,6 +33,7 @@ include_directories( ${CMAKE_SOURCE_DIR}
 
 add_executable( testall
   tests/tests.cpp
+  src/Fourier2d.cpp
   src/NavierStokesPhysics.cpp
   src/NavierStokesState.cpp
   tests/fft_test.cpp
@@ -40,10 +41,12 @@ add_executable( testall
 
 add_executable( solver
   src/driver.cpp
+  src/Fourier2d.cpp
   src/Inputfile.hpp
   src/NavierStokesState.cpp
   src/NavierStokesPhysics.cpp
   src/Grid2d.cpp
+  src/TimeIntegrator.cpp
   src/options.hpp
   src/options_parser.hpp
 )

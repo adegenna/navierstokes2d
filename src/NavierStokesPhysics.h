@@ -8,26 +8,24 @@
 #include <iostream>
 #include <memory>
 
-std::shared_ptr< Eigen::MatrixXcd > fft2( std::shared_ptr< Eigen::MatrixXd >  matIn);
-std::shared_ptr< Eigen::MatrixXcd > ifft2(std::shared_ptr< Eigen::MatrixXcd > matIn);
-
 class NavierStokesPhysics {
 
  public:
 
   NavierStokesPhysics(Options& options, NavierStokesState& simulation, Grid2d& grid);
   ~NavierStokesPhysics();
+  std::shared_ptr< Eigen::ArrayXXcd > rhs_fourier_vorticity( const Eigen::ArrayXXcd& W_hat );
+  Eigen::ArrayXXcd& get_current_fourier_vorticity() { return W_hat_; }
   void solve();
   
  private:
-  
-  void update_fourier_vorticity_crank_nicolson(Eigen::ArrayXXcd& W_hat,\
-					       Eigen::ArrayXXcd& W_hat_new);
+
+  std::shared_ptr< Eigen::ArrayXXcd > update_fourier_vorticity_crank_nicolson( Eigen::ArrayXXcd& W_hat );
   const Options      options_;
   NavierStokesState* simulation_;
   Grid2d*            grid_;
   Eigen::ArrayXXcd   laplacian_hat_;
-  
+  Eigen::ArrayXXcd   W_hat_;
   
 };
 
