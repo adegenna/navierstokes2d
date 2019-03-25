@@ -81,7 +81,7 @@ shared_ptr< ArrayXXcd > NavierStokesPhysics::rhs_fourier_vorticity( const ArrayX
   ArrayXXcd u_grad_W_hat = *fft2( make_shared< MatrixXd > ( u_grad_W.matrix() ) );
   u_grad_W_hat          *= alias_correction;
   ArrayXXcd linear       = -mu * laplacian_hat_ * W_hat;
-  ArrayXXcd RHS          = linear + u_grad_W_hat;
+  ArrayXXcd RHS          = linear - u_grad_W_hat;
   auto rhs_ptr           = make_shared< ArrayXXcd > ( RHS );
   return rhs_ptr;
   
