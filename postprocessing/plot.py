@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 from matplotlib import animation
 
 t0 = 0
-tf = 5000
+tf = 3000
 nx = 256
 ny = 256
 
@@ -11,7 +11,7 @@ x = np.arange(nx)
 y = np.arange(ny)
 xx,yy = np.meshgrid(x,y)
 
-tstep = 100
+tstep = 1000
 fig   = plt.figure(10,figsize=(8,8))
 ax    = fig.gca()
 
@@ -25,7 +25,7 @@ def animate(i):
 
 anim = animation.FuncAnimation(fig, animate,
                                frames=int(tf/tstep)+1, interval=20)
-anim.save('ns2d.mp4', fps=30, extra_args=['-vcodec', 'libx264'])
+#anim.save('ns2d.mp4', fps=30, extra_args=['-vcodec', 'libx264'])
 plt.show()
 
 

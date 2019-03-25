@@ -1,8 +1,8 @@
 initialvorticityfile = /home/adegennaro/Projects/navierstokes2d/data/omega256_256.csv
 outputfile           = /home/adegennaro/Projects/navierstokes2d/output/out
-dt                   = 0.01
-tsteps               = 1001
-tsave                = 100
+dt                   = 0.0001
+tsteps               = 10001
+tsave                = 1000
 mu                   = 0.001
 xmin                 = 0
 xmax                 = 6.283185307179586

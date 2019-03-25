@@ -12,6 +12,7 @@ class TimeIntegrator {
   TimeIntegrator(Options& options, NavierStokesPhysics& physics, NavierStokesState& state);
   ~TimeIntegrator();
   void rk4(Eigen::ArrayXXcd& W_hat);
+  void euler(Eigen::ArrayXXcd& W_hat);
   
  private:
   const Options        options_;

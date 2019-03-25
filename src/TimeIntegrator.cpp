@@ -37,6 +37,22 @@ void TimeIntegrator::compute_ifft_and_save_current_state(ArrayXXcd& W_hat, int i
   state_->write_vorticity(options_.outputfile + "_" + std::to_string(i) + ".csv");
 }
 
+void TimeIntegrator::euler(ArrayXXcd& W_hat) {
+
+  double dt = options_.dt;
+  for (int i=0; i<options_.tsteps; i++) {
+
+    if ((i % options_.tsave) == 0)
+      this->compute_ifft_and_save_current_state(W_hat,i);
+
+    ArrayXXcd k1 = *(physics_->rhs_fourier_vorticity(W_hat));
+    W_hat       += dt * k1;
+
+  }
+
+}
+
+
 void TimeIntegrator::rk4(ArrayXXcd& W_hat) {
 
   double dt = options_.dt;
