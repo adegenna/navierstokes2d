@@ -17,6 +17,7 @@ bool parseOptions(int argc, char *argv[], Options& options){
     ("help", "produce help message")
     ("initialvorticityfile"        , po::value<std::string>(&options.initialvorticityfile) , "Set intial vorticity filename")
     ("outputfile"       , po::value<std::string>(&options.outputfile) , "Set output filename")
+    ("integrator"       , po::value<std::string>(&options.integrator) , "Set time integrator type")
     ("dt"               , po::value<double>(&options.dt) , "Set timestep")
     ("tsteps"           , po::value<int>(&options.tsteps)     , "Set number of time steps")
     ("tsave"            , po::value<int>(&options.tsave)      , "Set checkpoint for saving")

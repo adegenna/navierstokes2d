@@ -5,6 +5,7 @@
 struct Options {
   std::string initialvorticityfile;
   std::string outputfile;
+  std::string integrator;
   double dt;
   int tsteps;
   int tsave;
@@ -21,6 +22,7 @@ struct Options {
 inline std::ostream& operator <<(std::ostream& os, const Options& o){
  os << "initialvorticityfile  = " << o.initialvorticityfile << std::endl
     << "outputfile = " << o.outputfile << std::endl
+    << "integrator = " << o.integrator << std::endl
     << "dt         = " << o.dt        << std::endl
     << "tsteps     = " << o.tsteps     << std::endl
     << "tsave      = " << o.tsave      << std::endl

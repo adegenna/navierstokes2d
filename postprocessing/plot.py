@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 from matplotlib import animation
 
 t0 = 0
-tf = 3000
+tf = 100000
 nx = 256
 ny = 256
 
@@ -11,7 +11,7 @@ x = np.arange(nx)
 y = np.arange(ny)
 xx,yy = np.meshgrid(x,y)
 
-tstep = 1000
+tstep = 5000
 fig   = plt.figure(10,figsize=(8,8))
 ax    = fig.gca()
 

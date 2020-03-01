@@ -39,8 +39,17 @@ int main(int argc, char* argv[]) {
   NavierStokesState state(omega0);
   NavierStokesPhysics physics(options, state, grid);
   TimeIntegrator integrator(options, physics, state);
+
+  if ( strcmp( options.integrator.c_str() , "CrankNicolson" ) == 0 ) {
+    physics.solve();
+  }
+  else if ( strcmp( options.integrator.c_str() , "RK4" ) == 0 ){
+    integrator.rk4( physics.get_current_fourier_vorticity() );
+  }
+  else if ( strcmp( options.integrator.c_str() , "Euler" ) == 0 ){
+    integrator.euler( physics.get_current_fourier_vorticity() );
+  }
   
-  integrator.rk4( physics.get_current_fourier_vorticity() );
   
   return 0;
 }

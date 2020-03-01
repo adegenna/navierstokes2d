@@ -4,8 +4,8 @@ import matplotlib.pyplot as plt
 def gaussian2d(xx,yy,x0,y0,sigma):
     return np.exp(-0.5*( (xx-x0)**2 + (yy-y0)**2 )/sigma**2 )
 
-nx = 256
-ny = 256
+nx = 64
+ny = 64
 
 x     = np.arange(nx)
 y     = np.arange(ny)
